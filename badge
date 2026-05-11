@@ -1,0 +1,10 @@
+#!/bin/bash
+# Wrapper for led-badge-11x44.py with correct library path for Apple Silicon Mac
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+
+if [[ ! -x "$SCRIPT_DIR/.venv/bin/python3" ]]; then
+  echo "Missing .venv. Run: python3 -m venv .venv && .venv/bin/pip install -r requirements.txt" >&2
+  exit 1
+fi
+
+DYLD_LIBRARY_PATH=/opt/homebrew/lib "$SCRIPT_DIR/.venv/bin/python3" "$SCRIPT_DIR/led-badge-11x44.py" "$@"

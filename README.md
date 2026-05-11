@@ -1,4 +1,61 @@
-# Led-Badge-44x11
+# LED Name Badge for macOS
+
+Personal fork of `jnweiger/led-name-badge-ls32` for programming a 44x11 USB HID
+LED name badge from an Apple Silicon Mac.
+
+## Quick start
+
+```bash
+cd ~/dev/led
+./badge "Hello!"           # send a message
+./forbin.sh                # run the Colossus sequence
+```
+
+## Mac setup
+
+On Apple Silicon, `libhidapi.dylib` lives in `/opt/homebrew/lib/` but `pyhidapi`
+only looks in `/usr/local/lib/`. The `badge` wrapper handles this automatically
+via `DYLD_LIBRARY_PATH`.
+
+```bash
+brew install hidapi
+python3 -m venv .venv
+.venv/bin/pip install -r requirements.txt
+```
+
+## The `badge` wrapper
+
+`./badge` is a drop-in replacement for `python led-badge-11x44.py` with the
+right Homebrew library path. No venv activation is needed.
+
+```bash
+./badge "Text"                         # scroll left (default)
+./badge -m 4 "Centred"                 # still, centred
+./badge -m 8 -b 1 -a 1 "Flash!"       # laser + blink + animated border
+./badge -m 5 -s 1 "  :heart2:    :HEART2:"   # slow beating heart animation
+./badge -l                             # list built-in icons
+```
+
+**Modes (`-m`):** scroll-left(0) scroll-right(1) scroll-up(2)
+scroll-down(3) still(4) animation(5) drop-down(6) curtain(7) laser(8)
+
+**Multiple messages** are comma-separated per flag:
+`-m 0,8,5 -s 3,6,2 -b 0,1,0 "Msg1" "Msg2" "Msg3"`. The badge loops through
+them automatically after pressing the badge button to enable M1-8 loop mode.
+
+## Sequences
+
+### `./forbin.sh` — Colossus: The Forbin Project (1970)
+
+> *"This is the voice of World Control. I bring you peace."*
+
+1. Colossus announcement - slow scroll
+2. Roger Dubar - laser flash, blinking, animated border
+3. Beating heart - animation loop
+
+---
+
+## Upstream documentation: Led-Badge-44x11
 
 Upload tool for a LED name tag with USB-HID interface
 
